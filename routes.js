@@ -20,9 +20,7 @@ router.get("/", async function (req, res, next) {
 
 router.get("/search", async function (req, res, next) {
   console.log("search: ", req);
-  // const customer = req.params;
-  // console.log(customer);
-  const customer = await Customer.get(req.params.search);
+  const customer = await Customer.findName(req.query.search);
   return res.render("customer_display.html", { customer });
 });
 
