@@ -16,6 +16,17 @@ router.get("/", async function (req, res, next) {
   return res.render("customer_list.html", { customers });
 });
 
+/** Homepage: search for a single customer. */
+
+router.get("/search", async function (req, res, next) {
+  console.log("search: ", req);
+  // const customer = req.params;
+  // console.log(customer);
+  const customer = await Customer.get(req.params.search);
+  return res.render("customer_display.html", { customer });
+});
+
+
 /** Form to add a new customer. */
 
 router.get("/add/", async function (req, res, next) {
