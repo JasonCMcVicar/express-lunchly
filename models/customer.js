@@ -85,12 +85,32 @@ class Customer {
       return new Customer(customer);
     }
 
+    /** get top 10 customers ordered by most reservations. */
+
+    static async findTopTen() {
+      const results = await db.query(
+        `SELECT COUNT(customer_id), customer_id
+                FROM reservations
+                GROUP BY customer_id
+                ORDER BY COUNT(customer_id) DESC
+                LIMIT 10;`,
+      );
+
+      const ids = results.rows.map(c => c.customer_id);
+      console.log(ids)
+
+      const customers = await Promise.all( ids.map( async function(i) {
+        return await Customer.get(i);
+      }));
+      console.log(customers);
+      return customers;
+    }
+
   /** get first & last name for this customer by customer id. */
 
   fullName() {
     return this.firstName + " " + this.lastName;
   }
-
 
   /** get all reservations for this customer. */
 
